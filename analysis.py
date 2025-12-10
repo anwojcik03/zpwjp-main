@@ -49,24 +49,19 @@ def portfolio_calcs(tickers, weights, start, end):
         data = data[["Date", "Close"]].copy()
         data.rename(columns={"Close": ticker}, inplace=True)
 
-        # pierwszy ticker → ustawiamy bazowy df
         if portfolio_df is None:
             portfolio_df = data
         else:
-            # INNER JOIN po Date
             portfolio_df = portfolio_df.merge(data, on="Date", how="inner")
 
-    # ustawiamy Date jako index
     portfolio_df.set_index("Date", inplace=True)
 
-    # przeliczamy wartości i sumę portfela
     for ticker in tickers:
         portfolio_df[ticker] = portfolio_df[ticker] / portfolio_df[ticker].iloc[0] * weights[ticker]
 
     portfolio_df["Portfolio"] = portfolio_df[tickers].sum(axis=1)
     portfolio_df["Return"] = portfolio_df["Portfolio"].pct_change()
 
-    # wyniki
     first = portfolio_df["Portfolio"].iloc[0]
     last = portfolio_df["Portfolio"].iloc[-1]
 
