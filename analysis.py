@@ -44,8 +44,6 @@ def portfolio_calcs(tickers, weights, start, end):
 
     for ticker in tickers:
         data = fetch_stock(ticker, str(start), str(end))
-        data = filter_date_range(data, start, end)
-
         data = data[["Date", "Close"]].copy()
         data.rename(columns={"Close": ticker}, inplace=True)
 
@@ -69,7 +67,5 @@ def portfolio_calcs(tickers, weights, start, end):
     volatility_daily = portfolio_df["Return"].std() * 100
 
     return last, profit_pct, volatility_daily, portfolio_df["Portfolio"]
-
-
 
 
