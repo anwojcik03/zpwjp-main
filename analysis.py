@@ -1,6 +1,6 @@
 import pandas as pd
 import warnings
-from processing import compute_daily_returns, filter_date_range
+from processing import compute_daily_returns
 from data_fetcher import fetch_stock
 import numpy as np
 def summary_stats(df):
@@ -9,19 +9,6 @@ def summary_stats(df):
 
         df = df.sort_values("Date")
 
-        # if df.empty:
-        #     return pd.DataFrame(
-        #         [
-        #             ("Mean daily return", None),
-        #             ("Volatility", None),
-        #             ("Full return", None),
-        #             ("Min price", None),
-        #             ("Max price", None)
-        #         ],
-        #         columns=["Metric", "Value"]
-        #     )
-
-        # Calculate full return safely
         first = df["Close"].iloc[0]
         last = df["Close"].iloc[-1]
         full_return = (last / first) - 1
@@ -67,5 +54,7 @@ def portfolio_calcs(tickers, weights, start, end):
     volatility_daily = portfolio_df["Return"].std() * 100
 
     return last, profit_pct, volatility_daily, portfolio_df["Portfolio"]
+
+
 
 
